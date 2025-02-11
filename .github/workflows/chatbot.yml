@@ -27,7 +27,9 @@ jobs:
           source .venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
-
+      - name: 🔑 Ajouter le Token Hugging Face aux variables d'environnement
+        run: |
+          echo "TOKEN_KEY=${{ secrets.TOKEN_KEY }}" >> $GITHUB_ENV
       - name: 🔍 Vérifier que le modèle Hugging Face est accessible
         run: |
           source .venv/bin/activate

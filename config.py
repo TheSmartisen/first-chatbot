@@ -5,4 +5,4 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    TOKEN_KEY = os.getenv("TOKEN_KEY", "token_read_huggingface")
+    TOKEN_KEY = os.getenv("HF_TOKEN_KEY", "token_read_huggingface")
