@@ -27,24 +27,37 @@ jobs:
           source .venv/bin/activate
           pip install --upgrade pip
           pip install -r requirements.txt
+      
       - name: 🔑 Ajouter le Token Hugging Face aux variables d'environnement
         run: |
           echo "TOKEN_KEY=${{ secrets.HF_TOKEN_KEY }}" >> $GITHUB_ENV
+        shell: bash  # Force l'utilisation de bash pour l'environnement
+
+      - name: 🔍 Vérifier que le Token Hugging Face est bien chargé
+        run: |
+          echo "Vérification du Token Hugging Face..."
+          echo "TOKEN_KEY=${TOKEN_KEY:0:6}********"  # Masque la majorité du token
+
       - name: 🔍 Vérifier que le modèle Hugging Face est accessible
         run: |
           source .venv/bin/activate
-          python -c "from transformers import pipeline; print(pipeline('translation_en_to_fr', model='Helsinki-NLP/opus-mt-en-fr'))"
+          python -c "from transformers import pipeline; print(pipeline('text-generation', model='microsoft/DialoGPT-medium', token='${TOKEN_KEY}'))"
 
       - name: ✅ Lancer les tests unitaires
         run: |
           source .venv/bin/activate
-          pytest tests/  # Assure-toi d'avoir des tests dans un dossier `tests/`
-
+          pytest tests/ --maxfail=1 --disable-warnings -q || exit 1  # Arrêter si un test échoue
+          
       - name: 🚀 Lancer l'application en arrière-plan
         run: |
           source .venv/bin/activate
-          python app.py &
+          nohup python app.py > app.log 2>&1 &  # Rediriger les logs pour éviter les blocages
           sleep 10  # Attendre que l'app démarre
 
       - name: 🛠 Vérifier que l'application tourne
-        run: curl -I http://127.0.0.1:7860
+        run: |
+          curl -I http://127.0.0.1:7860 || (echo "❌ L'application ne tourne pas !" && exit 1)
+
+      - name: 🔎 Afficher les logs de l'application en cas d'échec
+        if: failure()
+        run: cat app.log  # Montre les logs en cas de problème
