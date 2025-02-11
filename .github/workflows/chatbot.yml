@@ -1,0 +1,45 @@
+name: Chatbot CI/CD
+
+on:
+  push:
+    branches:
+      - main  # Exécute le workflow à chaque push sur main
+  pull_request:
+    branches:
+      - main  # Exécute aussi lors des pull requests
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Cloner le dépôt
+        uses: actions/checkout@v4
+
+      - name: 🐍 Installer Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'  # Adapte selon ton besoin
+
+      - name: 📦 Installer les dépendances
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 🔍 Vérifier que le modèle Hugging Face est accessible
+        run: |
+          python -c "from transformers import pipeline; print(pipeline('translation_en_to_fr', model='Helsinki-NLP/opus-mt-en-fr'))"
+
+      - name: ✅ Lancer les tests unitaires
+        run: |
+          pytest tests/  # Assure-toi d'avoir des tests dans un dossier `tests/`
+
+      - name: 🚀 Lancer l'application en arrière-plan
+        run: |
+          python app.py &
+          sleep 10  # Attendre que l'app démarre
+
+      - name: 🛠 Vérifier que l'application tourne
+        run: curl -I http://127.0.0.1:7860
