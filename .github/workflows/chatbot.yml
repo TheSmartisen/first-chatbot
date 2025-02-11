@@ -35,10 +35,12 @@ jobs:
 
       - name: ✅ Lancer les tests unitaires
         run: |
+          source .venv/bin/activate
           pytest tests/  # Assure-toi d'avoir des tests dans un dossier `tests/`
 
       - name: 🚀 Lancer l'application en arrière-plan
         run: |
+          source .venv/bin/activate
           python app.py &
           sleep 10  # Attendre que l'app démarre
 
