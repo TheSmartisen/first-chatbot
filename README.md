@@ -75,15 +75,5 @@ first-chatbot/
 
 ---
 
-## 🛠️ **Contribuer au Projet**
-Tu veux **ajouter une fonctionnalité** ou **corriger un bug** ?  
-1. **Fork** le projet 🍴  
-2. **Crée une branche** : `git checkout -b feature/ma-feature`  
-3. **Ajoute tes modifications** : `git commit -m "Ajout de ma feature"`  
-4. **Pousse la branche** : `git push origin feature/ma-feature`  
-5. **Crée une Pull Request** 🛠️  
-
----
-
 ## 📄 **Licence**
 Projet sous licence **MIT** – Fais-en bon usage ! 🎉
