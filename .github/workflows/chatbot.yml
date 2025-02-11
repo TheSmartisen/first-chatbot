@@ -19,7 +19,7 @@ jobs:
       - name: 🐍 Installer Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'  # Adapte selon ton besoin
+          python-version: '3.10'
 
       - name: 📦 Installer les dépendances
         run: |
@@ -30,6 +30,7 @@ jobs:
 
       - name: 🔍 Vérifier que le modèle Hugging Face est accessible
         run: |
+          source .venv/bin/activate
           python -c "from transformers import pipeline; print(pipeline('translation_en_to_fr', model='Helsinki-NLP/opus-mt-en-fr'))"
 
       - name: ✅ Lancer les tests unitaires
