@@ -1,5 +1,9 @@
 import os
 from transformers import pipeline
+from dotenv import load_dotenv
+
+# Charger les variables depuis le fichier .env
+load_dotenv()
 
 # Récupérer le token Hugging Face
 TOKEN_KEY = os.getenv("HF_TOKEN_KEY")
