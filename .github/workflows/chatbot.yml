@@ -46,8 +46,9 @@ jobs:
       - name: ✅ Lancer les tests unitaires
         run: |
           source .venv/bin/activate
-          pytest tests/ --maxfail=1 --disable-warnings -q || exit 1  # Arrêter si un test échoue
-          
+          export TOKEN_KEY=${TOKEN_KEY}  # 🔥 Ajout manuel du token pour pytest
+          pytest tests/ --maxfail=1 --disable-warnings -q || exit 1
+
       - name: 🚀 Lancer l'application en arrière-plan
         run: |
           source .venv/bin/activate
