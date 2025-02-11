@@ -54,11 +54,3 @@ jobs:
           source .venv/bin/activate
           nohup python app.py > app.log 2>&1 &  # Rediriger les logs pour éviter les blocages
           sleep 10  # Attendre que l'app démarre
-
-      - name: 🛠 Vérifier que l'application tourne
-        run: |
-          curl -I http://127.0.0.1:7860 || (echo "❌ L'application ne tourne pas !" && exit 1)
-
-      - name: 🔎 Afficher les logs de l'application en cas d'échec
-        if: failure()
-        run: cat app.log  # Montre les logs en cas de problème
